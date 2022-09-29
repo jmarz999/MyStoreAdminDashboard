@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyStoreAdminDashboard.Services
+﻿namespace MyStoreAdminDashboard.Services
 {
-    public class ProductDto
+    public class ProductDto : CreateProductDto
     {
         public int Id { get; set; }
     }

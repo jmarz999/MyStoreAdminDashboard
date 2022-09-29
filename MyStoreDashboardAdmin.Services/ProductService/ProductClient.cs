@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using MyStoreAdminDashboard.Services;
 using Newtonsoft.Json;
 
-namespace MyStoreDashboardAdmin.Services
+namespace MyStoreAdminDashboard.Services
 {
-    public class ProductService : IProductService
+    public static class ProductClient
     {
-        public ProductService()
-        {
-
-        }
         public static async Task<T> Get<T>(string url)
         {
             try
@@ -95,5 +90,6 @@ namespace MyStoreDashboardAdmin.Services
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }
+
     }
 }

@@ -1,0 +1,42 @@
+﻿@model List<MyStoreAdminDashboard.Services.ProductDto>
+
+@{
+    ViewData["Title"] = "ManageProducts";
+}
+
+<h1>Manage Products</h1>
+
+<p>
+    <a asp-controller="Product" asp-action="Create" class="btn btn-primary">Create Product</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Manufacturers</td>
+                <td>@product.Category</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Description</td>
+                <td>
+                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">Details</a> |
+                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">Edit</a> |
+                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" onclick="return confirm('Are you sure you want to delete @product.Name?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
