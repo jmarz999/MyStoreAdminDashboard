@@ -32,7 +32,7 @@ namespace MyStoreAdminDashboard.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(String.Empty, "Something went wrong");
+                    ModelState.AddModelError(String.Empty, "Product already exists");
                 }
             }
             return View(model);

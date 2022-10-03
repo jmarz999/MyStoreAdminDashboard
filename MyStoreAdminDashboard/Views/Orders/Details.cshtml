@@ -1,0 +1,23 @@
+﻿@model MyStoreAdminDashboard.Services.OrderDto
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <hr />
+    <div class="card" style="width: 18rem;">
+        <ul class="list-group list-group-flush">
+            @foreach (var product in Model.Products)
+            {
+                <li class="list-group-item">@product.Name</li>
+                <li class="list-group-item">@product.Manufacturers</li>
+                <li class="list-group-item">@product.Category</li>
+                <li class="list-group-item">@product.Price</li>
+                <li class="list-group-item">@product.Description</li>
+            }
+        </ul>
+    </div>
+</div>

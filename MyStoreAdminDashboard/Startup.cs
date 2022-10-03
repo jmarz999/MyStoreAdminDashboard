@@ -25,6 +25,7 @@ namespace MyStoreAdminDashboard
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IProductService, ProductServices>();
+            services.AddTransient<IOrderService, OrderService>();
 
             services.AddControllersWithViews();
         }
