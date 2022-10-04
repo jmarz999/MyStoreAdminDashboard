@@ -19,16 +19,33 @@
     <tbody>
         @foreach (var order in Model)
         {
-            <tr>
-                <td>@order.Name</td>
-                <td>@order.Email</td>
-                <td>@order.Address</td>
-                <td>@order.Price</td>
-                <td>@order.Status</td>
+        <tr>
+            <td>@order.Name</td>
+            <td>@order.Email</td>
+            <td>@order.Address</td>
+            <td>@order.Price</td>
+
+            @if (@order.Status == "Pending")
+            {
                 <td>
-                    <a asp-controller="Orders" asp-action="Details" asp-route-id="@order.Id">Details</a>
+                    <a asp-controller="Orders" asp-action="UpdateStatus" asp-route-status="InProcess" asp-route-orderId="@order.Id" class="btn btn-primary">Set In Process</a>
                 </td>
-            </tr>
+            }
+            else if (order.Status == "InProcess")
+            {
+                <td>
+                    <a asp-controller="Orders" asp-action="UpdateStatus" asp-route-status="Done" asp-route-orderId="@order.Id" class="btn btn-success">Set Done</a>
+                </td>
+            }
+            else
+            {
+                <td class="text-success">Done</td>
+            }
+
+            <td>
+                <a asp-controller="Orders" asp-action="Details" asp-route-id="@order.Id">Details</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

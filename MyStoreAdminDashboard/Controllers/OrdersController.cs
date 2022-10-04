@@ -25,5 +25,15 @@ namespace MyStoreAdminDashboard.Controllers
 
             return View(order);
         }
+
+        public async Task<IActionResult> UpdateStatus(int orderId, string status)
+        {
+            OrderDto order = await orderService.GetById(orderId);
+            order.Status = status;
+
+            await orderService.Update(order);
+
+            return RedirectToAction(nameof(ManageOrders));
+        }
     }
 }
