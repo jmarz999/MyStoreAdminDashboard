@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyStoreAdminDashboard.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MyStoreAdminDashboard.Services;
 
 namespace MyStoreAdminDashboard.Controllers
 {
@@ -38,23 +38,30 @@ namespace MyStoreAdminDashboard.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var response = await userAppService.CreateAsync(user);
-                if (response)
+                if (ModelState.IsValid)
                 {
+                    var response = await userAppService.CreateAsync(user);
+                    if (string.IsNullOrWhiteSpace(response))
+                    {
+                        return RedirectToAction(nameof(ManageUsers));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(String.Empty, response);
+                    }
+                }
 
-                    return RedirectToAction(nameof(ManageUsers));
-                }
-                else
-                {
-                    ModelState.AddModelError(String.Empty, "User already have account");
-                }
+                user.GenderValues = await userAppService.GetGenderValues();
+
+                return View(user);
             }
+            catch (Exception ex)
+            {
 
-            user.GenderValues = await userAppService.GetGenderValues();
-
-            return View(user);
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IActionResult> EditUser(string id)
@@ -72,13 +79,13 @@ namespace MyStoreAdminDashboard.Controllers
             if (ModelState.IsValid)
             {
                 var response = await userAppService.UpdateAsync(model);
-                if (response)
+                if (string.IsNullOrWhiteSpace(response))
                 {
                     return RedirectToAction(nameof(ManageUsers));
                 }
                 else
                 {
-                    ModelState.AddModelError(String.Empty, "Something went wrong");
+                    ModelState.AddModelError(String.Empty, response);
                 }
             }
 

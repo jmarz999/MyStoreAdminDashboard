@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace MyStoreAdminDashboard.Services
 {
@@ -41,7 +41,7 @@ namespace MyStoreAdminDashboard.Services
             return user;
         }
 
-        public async Task<bool> CreateAsync(CreateUserDto user)
+        public async Task<string> CreateAsync(CreateUserDto user)
         {
             HttpClient httpClient = new HttpClient();
 
@@ -49,15 +49,18 @@ namespace MyStoreAdminDashboard.Services
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                return true;
+                return string.Empty;
             }
             else
             {
-                return false;
+                var obj = new { Message = "" };
+                var response = await httpResponse.Content.ReadAsStringAsync();
+                obj = JsonConvert.DeserializeAnonymousType(response, obj);
+                return obj.Message;
             }
         }
 
-        public async Task<bool> UpdateAsync(UserDto user)
+        public async Task<string> UpdateAsync(UserDto user)
         {
             HttpClient httpClient = new HttpClient();
 
@@ -65,11 +68,15 @@ namespace MyStoreAdminDashboard.Services
 
             if (httpResponse.IsSuccessStatusCode)
             {
-                return true;
+
+                return string.Empty;
             }
             else
             {
-                return false;
+                var obj = new { Message = "" };
+                var response = await httpResponse.Content.ReadAsStringAsync();
+                obj = JsonConvert.DeserializeAnonymousType(response, obj);
+                return obj.Message;
             }
         }
 
