@@ -79,6 +79,5 @@ namespace MyStoreAdminDashboard.Controllers
             await productService.Delete(id);
             return RedirectToAction(nameof(ManageProducts));
         }
-
     }
 }

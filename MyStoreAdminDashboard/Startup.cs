@@ -26,6 +26,7 @@ namespace MyStoreAdminDashboard
         {
             services.AddTransient<IProductService, ProductServices>();
             services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IUserAppService, UserAppService>();
 
             services.AddControllersWithViews();
         }
