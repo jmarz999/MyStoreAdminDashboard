@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -82,9 +83,22 @@ namespace MyStoreAdminDashboard.Services
 
         public async Task DeleteAsync(string id)
         {
-            HttpClient httpClient = new HttpClient();
+            try
+            {
+                HttpClient httpClient = new HttpClient();
 
-            await httpClient.DeleteAsync($"https://localhost:44319/api/Users/Delete?id={id}");
+                HttpResponseMessage httpResponse = await httpClient.DeleteAsync($"https://localhost:44319/api/Users/DeleteUser?id={id}");
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<List<string>> GetGenderValues()

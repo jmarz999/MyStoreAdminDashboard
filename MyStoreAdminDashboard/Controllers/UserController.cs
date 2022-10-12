@@ -95,8 +95,16 @@ namespace MyStoreAdminDashboard.Controllers
 
         public async Task<IActionResult> Delete(string id)
         {
-            await userAppService.DeleteAsync(id);
-            return RedirectToAction(nameof(ManageUsers));
+            try
+            {
+                await userAppService.DeleteAsync(id);
+                return RedirectToAction(nameof(CreateUser));
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
