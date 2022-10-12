@@ -65,7 +65,7 @@ namespace MyStoreAdminDashboard.Services
         {
             HttpClient httpClient = new HttpClient();
 
-            HttpResponseMessage httpResponse = await httpClient.PutAsJsonAsync<UserDto>("https://localhost:44319/api/Users/UpdateUser", user);
+            HttpResponseMessage httpResponse = await httpClient.PutAsJsonAsync("https://localhost:44319/api/Users/UpdateUser", user);
 
             if (httpResponse.IsSuccessStatusCode)
             {

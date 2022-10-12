@@ -27,6 +27,7 @@ namespace MyStoreAdminDashboard
             services.AddTransient<IProductService, ProductServices>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserAppService, UserAppService>();
+            services.AddTransient<IAuthService, AuthService>();
 
             services.AddControllersWithViews();
         }
@@ -56,7 +57,7 @@ namespace MyStoreAdminDashboard
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Authentication}/{action=LogIn}/{id?}");
             });
         }
     }
