@@ -9,9 +9,11 @@ namespace MyStoreAdminDashboard.Services
 {
     public class UserAppService : IUserAppService
     {
-        public async Task<List<UserDto>> GetAllAsync()
+        public async Task<List<UserDto>> GetAllAsync(string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.GetAsync("https://localhost:44319/api/Users/GetAll");
 

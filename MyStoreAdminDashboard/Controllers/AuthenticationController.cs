@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyStoreAdminDashboard.Services;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyStoreAdminDashboard.Controllers
@@ -17,7 +16,7 @@ namespace MyStoreAdminDashboard.Controllers
 
         public IActionResult Login()
         {
-            if (User.Identity.IsAuthenticated)
+            if (HttpContext.Session.TryGetValue("Token", out byte[] value))
             {
                 return RedirectToAction("ManageUsers", "User");
             }
@@ -35,10 +34,7 @@ namespace MyStoreAdminDashboard.Controllers
 
                 if (!string.IsNullOrWhiteSpace(response.Token))
                 {
-                    
-                    var token = new JwtSecurityTokenHandler().ReadJwtToken(response.Token);
-
-                    var identity = new ClaimsPrincipal(new ClaimsIdentity(token.Claims));
+                    HttpContext.Session.Set("Token", Encoding.ASCII.GetBytes("Bearer " + response.Token));
 
                     return RedirectToAction("ManageUsers", "User");
                 }

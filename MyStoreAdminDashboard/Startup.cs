@@ -27,7 +27,8 @@ namespace MyStoreAdminDashboard
             services.AddTransient<IUserAppService, UserAppService>();
             services.AddTransient<IAuthService, AuthService>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddSessionStateTempDataProvider();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,10 +51,6 @@ namespace MyStoreAdminDashboard
             app.UseRouting();
 
             app.UseSession();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
