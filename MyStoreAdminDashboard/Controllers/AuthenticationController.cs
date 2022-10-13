@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyStoreAdminDashboard.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MyStoreAdminDashboard.Controllers
@@ -31,8 +33,13 @@ namespace MyStoreAdminDashboard.Controllers
             {
                 var response = await authenticationService.LogInAsync(user);
 
-                if (response)
+                if (!string.IsNullOrWhiteSpace(response.Token))
                 {
+                    
+                    var token = new JwtSecurityTokenHandler().ReadJwtToken(response.Token);
+
+                    var identity = new ClaimsPrincipal(new ClaimsIdentity(token.Claims));
+
                     return RedirectToAction("ManageUsers", "User");
                 }
 

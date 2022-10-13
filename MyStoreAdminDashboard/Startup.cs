@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +20,8 @@ namespace MyStoreAdminDashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+
             services.AddTransient<IProductService, ProductServices>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserAppService, UserAppService>();
@@ -50,6 +48,10 @@ namespace MyStoreAdminDashboard
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

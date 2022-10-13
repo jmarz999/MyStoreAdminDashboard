@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyStoreAdminDashboard.Services;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,14 @@ namespace MyStoreAdminDashboard.Controllers
             this.userAppService = userAppService;
         }
 
+        [Authorize]
         public async Task<IActionResult> ManageUsers()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Authentication", "Login");
+            }
+
             List<UserDto> models = await userAppService.GetAllAsync();
 
             return View(models);
