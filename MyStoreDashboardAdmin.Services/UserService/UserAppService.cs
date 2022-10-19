@@ -27,9 +27,11 @@ namespace MyStoreAdminDashboard.Services
             return users;
         }
 
-        public async Task<UserDto> GetByIdAsync(string id)
+        public async Task<UserDto> GetByIdAsync(string id, string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.GetAsync($"https://localhost:44319/api/Users/GetById?id={id}");
 
@@ -44,9 +46,11 @@ namespace MyStoreAdminDashboard.Services
             return user;
         }
 
-        public async Task<string> CreateAsync(CreateUserDto user)
+        public async Task<string> CreateAsync(CreateUserDto user, string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync<CreateUserDto>("https://localhost:44319/api/Users/CreateUser", user);
 
@@ -63,9 +67,11 @@ namespace MyStoreAdminDashboard.Services
             }
         }
 
-        public async Task<string> UpdateAsync(UserDto user)
+        public async Task<string> UpdateAsync(UserDto user, string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.PutAsJsonAsync("https://localhost:44319/api/Users/UpdateUser", user);
 
@@ -83,11 +89,13 @@ namespace MyStoreAdminDashboard.Services
             }
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(string id, string token)
         {
             try
             {
                 HttpClient httpClient = new HttpClient();
+
+                httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
                 HttpResponseMessage httpResponse = await httpClient.DeleteAsync($"https://localhost:44319/api/Users/DeleteUser?id={id}");
 
@@ -103,9 +111,11 @@ namespace MyStoreAdminDashboard.Services
             }
         }
 
-        public async Task<List<string>> GetGenderValues()
+        public async Task<List<string>> GetGenderValues(string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.GetAsync("https://localhost:44319/api/Users/GetGenderValues");
 

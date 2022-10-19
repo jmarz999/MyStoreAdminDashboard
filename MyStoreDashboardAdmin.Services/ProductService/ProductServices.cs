@@ -8,11 +8,13 @@ namespace MyStoreAdminDashboard.Services
 {
     public class ProductServices : IProductService
     {
-        public async Task<bool> Create(CreateProductDto product)
+        public async Task<bool> Create(CreateProductDto product, string token)
         {
             HttpClient httpClient = new HttpClient();
 
-            HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync<CreateProductDto>("https://localhost:44319/api/Products/Add", product);
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
+
+            HttpResponseMessage httpResponse = await httpClient.PostAsJsonAsync("https://localhost:44319/api/Products/Add", product);
 
             if (httpResponse.IsSuccessStatusCode)
             {
@@ -57,9 +59,11 @@ namespace MyStoreAdminDashboard.Services
             return product;
         }
 
-        public async Task<bool> Update(ProductDto product)
+        public async Task<bool> Update(ProductDto product, string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.PutAsJsonAsync<ProductDto>("https://localhost:44319/api/Products/Update", product);
 
@@ -73,9 +77,11 @@ namespace MyStoreAdminDashboard.Services
             }
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(int id, string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.DeleteAsync($"https://localhost:44319/api/Products/Delete?id={id}");
         }

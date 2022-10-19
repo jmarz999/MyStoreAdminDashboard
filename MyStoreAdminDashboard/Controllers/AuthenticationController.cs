@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyStoreAdminDashboard.Services;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace MyStoreAdminDashboard.Controllers
             this.authenticationService = authenticationService;
         }
 
-        public IActionResult Login()
+        public IActionResult LogIn()
         {
             if (HttpContext.Session.TryGetValue("Token", out byte[] value))
             {
@@ -46,10 +47,20 @@ namespace MyStoreAdminDashboard.Controllers
             return View(user);
         }
 
+        [HttpGet]
         public async Task<IActionResult> LogOut()
         {
-            await authenticationService.LogOut();
-            return RedirectToAction(nameof(LogIn));
+            try
+            {
+                await authenticationService.LogOut();
+
+                HttpContext.Session.Clear();
+                return RedirectToAction(nameof(LogIn));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

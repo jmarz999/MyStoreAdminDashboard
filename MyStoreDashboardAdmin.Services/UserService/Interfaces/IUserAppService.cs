@@ -6,10 +6,10 @@ namespace MyStoreAdminDashboard.Services
     public interface IUserAppService
     {
         Task<List<UserDto>> GetAllAsync(string token);
-        Task<UserDto> GetByIdAsync(string id);
-        Task<string> CreateAsync(CreateUserDto user);
-        Task<string> UpdateAsync(UserDto user);
-        Task DeleteAsync(string id);
-        Task<List<string>> GetGenderValues();
+        Task<UserDto> GetByIdAsync(string id, string token);
+        Task<string> CreateAsync(CreateUserDto user, string token);
+        Task<string> UpdateAsync(UserDto user, string token);
+        Task DeleteAsync(string id, string token);
+        Task<List<string>> GetGenderValues(string token);
     }
 }

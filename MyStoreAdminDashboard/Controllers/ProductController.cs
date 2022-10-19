@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MyStoreAdminDashboard.Helpers;
 using MyStoreAdminDashboard.Services;
 
 namespace MyStoreAdminDashboard.Controllers
@@ -19,12 +21,16 @@ namespace MyStoreAdminDashboard.Controllers
             CreateProductDto model = new CreateProductDto();
             return View(model);
         }
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreateProductDto model)
         {
             if (ModelState.IsValid)
             {
-                var response = await productService.Create(model);
+                HttpContext.Session.TryGetValue("Token", out byte[] token);
+
+                var response = await productService.Create(model, Encoding.ASCII.GetString(token));
 
                 if (response)
                 {
@@ -38,12 +44,14 @@ namespace MyStoreAdminDashboard.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> ManageProducts()
         {
             List<ProductDto> models = await productService.GetAllAsync();
             return View(models);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             ProductDto model = await productService.GetById(id);
@@ -56,12 +64,15 @@ namespace MyStoreAdminDashboard.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPut]
+        [Authorize]
         public async Task<IActionResult> Edit(ProductDto model)
         {
             if (ModelState.IsValid)
             {
-                var response = await productService.Update(model);
+                HttpContext.Session.TryGetValue("Token", out byte[] token);
+
+                var response = await productService.Update(model, Encoding.ASCII.GetString(token));
                 if (response)
                 {
                     return RedirectToAction(nameof(ManageProducts));
@@ -74,9 +85,13 @@ namespace MyStoreAdminDashboard.Controllers
             return View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            await productService.Delete(id);
+            HttpContext.Session.TryGetValue("Token", out byte[] token);
+
+            await productService.Delete(id, Encoding.ASCII.GetString(token));
+
             return RedirectToAction(nameof(ManageProducts));
         }
     }

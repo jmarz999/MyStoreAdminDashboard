@@ -18,6 +18,7 @@ namespace MyStoreAdminDashboard.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> ManageUsers()
         {
             HttpContext.Session.TryGetValue("Token", out byte[] token);
@@ -28,11 +29,12 @@ namespace MyStoreAdminDashboard.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> GetById(string id)
         {
             HttpContext.Session.TryGetValue("Token", out byte[] token);
 
-            UserDto model = await userAppService.GetByIdAsync(id);
+            UserDto model = await userAppService.GetByIdAsync(id, Encoding.ASCII.GetString(token));
             return View(model);
         }
 
@@ -43,12 +45,12 @@ namespace MyStoreAdminDashboard.Controllers
 
             CreateUserDto model = new CreateUserDto();
 
-            model.GenderValues = await userAppService.GetGenderValues();
+            model.GenderValues = await userAppService.GetGenderValues(Encoding.ASCII.GetString(token));
             return View(model);
         }
 
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
             HttpContext.Session.TryGetValue("Token", out byte[] token);
@@ -57,7 +59,7 @@ namespace MyStoreAdminDashboard.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var response = await userAppService.CreateAsync(user);
+                    var response = await userAppService.CreateAsync(user, Encoding.ASCII.GetString(token));
                     if (string.IsNullOrWhiteSpace(response))
                     {
                         return RedirectToAction(nameof(ManageUsers));
@@ -68,7 +70,7 @@ namespace MyStoreAdminDashboard.Controllers
                     }
                 }
 
-                user.GenderValues = await userAppService.GetGenderValues();
+                user.GenderValues = await userAppService.GetGenderValues(Encoding.ASCII.GetString(token));
 
                 return View(user);
             }
@@ -84,22 +86,22 @@ namespace MyStoreAdminDashboard.Controllers
         {
             HttpContext.Session.TryGetValue("Token", out byte[] token);
 
-            UserDto model = await userAppService.GetByIdAsync(id);
+            UserDto model = await userAppService.GetByIdAsync(id, Encoding.ASCII.GetString(token));
             model.GenderValues = new List<string>();
 
-            model.GenderValues = await userAppService.GetGenderValues();
+            model.GenderValues = await userAppService.GetGenderValues(Encoding.ASCII.GetString(token));
             return View(model);
         }
 
-        [HttpPost]
         [Authorize]
+        [HttpPut]
         public async Task<IActionResult> EditUser(UserDto model)
         {
             HttpContext.Session.TryGetValue("Token", out byte[] token);
 
             if (ModelState.IsValid)
             {
-                var response = await userAppService.UpdateAsync(model);
+                var response = await userAppService.UpdateAsync(model, Encoding.ASCII.GetString(token));
                 if (string.IsNullOrWhiteSpace(response))
                 {
                     return RedirectToAction(nameof(ManageUsers));
@@ -110,7 +112,7 @@ namespace MyStoreAdminDashboard.Controllers
                 }
             }
 
-            model.GenderValues = await userAppService.GetGenderValues();
+            model.GenderValues = await userAppService.GetGenderValues(Encoding.ASCII.GetString(token));
             return View(model);
         }
 
@@ -121,7 +123,7 @@ namespace MyStoreAdminDashboard.Controllers
 
             try
             {
-                await userAppService.DeleteAsync(id);
+                await userAppService.DeleteAsync(id, Encoding.ASCII.GetString(token));
                 return RedirectToAction(nameof(CreateUser));
             }
             catch (Exception ex)

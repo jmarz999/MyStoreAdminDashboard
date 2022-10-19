@@ -5,8 +5,8 @@ namespace MyStoreAdminDashboard.Services
 {
     public interface IOrderService
     {
-        Task<List<OrderDto>> GetAllAsync();
-        Task<OrderDto> GetById(int id);
-        Task<bool> Update(OrderDto order);
+        Task<List<OrderDto>> GetAllAsync(string token);
+        Task<OrderDto> GetById(int id, string token);
+        Task<bool> Update(OrderDto order, string token);
     }
 }

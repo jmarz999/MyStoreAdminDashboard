@@ -11,9 +11,11 @@ namespace MyStoreAdminDashboard.Services
 {
     public class OrderService : IOrderService
     {
-        public async Task<List<OrderDto>> GetAllAsync()
+        public async Task<List<OrderDto>> GetAllAsync(string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.GetAsync("https://localhost:44319/api/Orders/GetAll");
 
@@ -27,9 +29,11 @@ namespace MyStoreAdminDashboard.Services
             return orders;
         }
 
-        public async Task<OrderDto> GetById(int id)
+        public async Task<OrderDto> GetById(int id, string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.GetAsync($"https://localhost:44319/api/Orders/GetById?id={id}");
 
@@ -43,9 +47,11 @@ namespace MyStoreAdminDashboard.Services
             return order;
         }
         
-        public async Task<bool> Update(OrderDto order)
+        public async Task<bool> Update(OrderDto order, string token)
         {
             HttpClient httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", token);
 
             HttpResponseMessage httpResponse = await httpClient.PutAsJsonAsync($"https://localhost:44319/api/Orders/Update", order);
 
