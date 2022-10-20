@@ -45,5 +45,46 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsVegan)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsVegan)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ExpirationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ExpirationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ingredients)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var ingredient in Model.Ingredients)
+            {
+                var countIng = 0;
+
+                countIng++;
+
+                @if (countIng > 1)
+                {
+                    <span>
+                        @ingredient.Name,
+                    </span>
+                }
+                else {
+                    <span>
+                        @ingredient.Name
+                    </span>
+                }
+            }
+        </dd>
     </dl>
 </div>
